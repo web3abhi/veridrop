@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
+pragma solidity 0.8.20;
 
 import { IWorldID } from './interfaces/IWorldID.sol';
 
@@ -50,4 +50,12 @@ struct ClaimAmountDetails {
 struct CoolDownClaimDetails {
     uint256 unlockTime; //Time to unlock
     uint256 unlockAmount; //Amount to unlock
+}
+
+struct DATAL0 {
+    uint256 _amount;
+    address _receiver;
+    bytes32[] _merkleProof;
+    bytes _encodedData;
+    uint256 _tokenId;
 }

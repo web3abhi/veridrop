@@ -2,6 +2,7 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 /**
  * @dev This contract implements a proxy that is upgradeable by an admin.
@@ -25,6 +26,10 @@ import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.so
  * you should think of the `ProxyAdmin` instance as the real administrative interface of your proxy.
  */
 contract ProxyContract is TransparentUpgradeableProxy {
+
+    bytes32 private constant _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
+    bytes32 private constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
+   
     constructor(address _implementation, address _admin, bytes memory _data)
         TransparentUpgradeableProxy(_implementation, _admin, _data)
     {}
@@ -41,5 +46,9 @@ contract ProxyContract is TransparentUpgradeableProxy {
         assembly {
             impl := sload(slot)
         }
+    }
+
+    receive() external payable {
+        _fallback();
     }
 }

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
+pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ClaimEmitter.sol";
 import "./ClaimHelper.sol";
 
@@ -13,7 +12,6 @@ import { OApp, Origin, MessagingFee } from "@layerzerolabs/lz-evm-oapp-v2/contra
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 import { ByteHasher } from './helpers/ByteHasher.sol';
-import { IWorldID } from './interfaces/IWorldID.sol';
 
 interface IERC20Extended is IERC20 {
     function decimals() external view returns (uint8);
@@ -25,31 +23,9 @@ interface IFactory {
     function claimFee() external view returns (uint256);
 }
 
-contract Claim is AccessControl, Initializable, ReentrancyGuard, OApp {
+contract Claim is AccessControl, Initializable, OApp {
 
-    using ByteHasher for bytes;
-
-	///////////////////////////////////////////////////////////////////////////////
-	///                                  ERRORS                                ///
-	//////////////////////////////////////////////////////////////////////////////
-
-	/// @notice Thrown when attempting to reuse a nullifier
-	error DuplicateNullifier(uint256 nullifierHash);
-
-	/// @dev The World ID instance that will be used for verifying proofs
-	IWorldID internal  worldId;
-
-	/// @dev The contract's external nullifier hash
-	uint256 internal  externalNullifier;
-
-	/// @dev The World ID group ID (always 1)
-	uint256 internal  groupId = 1;
-
-    mapping(uint256 => bool) internal nullifierHashes;
-
-	/// @param nullifierHash The nullifier hash for the verified proof
-	/// @dev A placeholder event that is emitted when a user successfully verifies with World ID
-	event Verified(uint256 nullifierHash);
+    constructor() OApp(address(0x6EDCE65403992e310A62460808c4b910D972f10f), msg.sender) Ownable(msg.sender) {}
 
     using SafeERC20 for IERC20;
 
@@ -68,8 +44,6 @@ contract Claim is AccessControl, Initializable, ReentrancyGuard, OApp {
     ///@dev mapping to keep track of amount to claim for a address
     mapping(address => CoolDownClaimDetails[]) public PendingClaimDetails;
 
-    constructor() OApp(address(0x6EDCE65403992e310A62460808c4b910D972f10f), msg.sender) {}
-
     function _lzReceive(
         Origin calldata _origin,
         bytes32 _guid,
@@ -79,8 +53,8 @@ contract Claim is AccessControl, Initializable, ReentrancyGuard, OApp {
     ) internal override {
         // Decode the payload to get the message
         // In this case, type is string, but depends on your encoding!
-        data = abi.decode(payload, (uint256, address, bytes32[], bytes, uint256, address, uint256, uint256, uint256[8]));
-        claim(data.amount, data.receiver, data.merkleProof, data.encodedData, data.tokenId, data.signal, data.root, data.nullifierHash, data.proof);
+        DATAL0 memory data = abi.decode(payload, (DATAL0));
+        claim(data._amount, data._receiver, data._merkleProof, data._encodedData, data._tokenId);
     }
 
     function initialize(address _admin, ClaimSettings memory _claimSettings, address _factory, address _emitter)
@@ -97,34 +71,9 @@ contract Claim is AccessControl, Initializable, ReentrancyGuard, OApp {
         factory = _factory;
         emitterContract = _emitter;
 
-        worldId = IWorldID(address(0x42FF98C4E85212a5D31358ACbFe76a621b50fC02));
-        externalNullifier = abi.encodePacked(abi.encodePacked("app_3066124e44753d8dffd50878d8498345").hashToField(), "claim").hashToField();
-	
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
         _grantRole(MODERATOR, _admin);
     }
-
-    function verifyWID(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) internal {
-		// First, we make sure this person hasn't done this before
-		if (nullifierHashes[nullifierHash]) revert DuplicateNullifier(nullifierHash);
-
-		// We now verify the provided proof is valid and the user is verified by World ID
-		worldId.verifyProof(
-			root,
-			groupId,
-			abi.encodePacked(signal).hashToField(),
-			nullifierHash,
-			externalNullifier,
-			proof
-		);
-
-		// We now record the user has done this, so they can't do it again (proof of uniqueness)
-		nullifierHashes[nullifierHash] = true;
-
-		// Make sure to emit some kind of event afterwards!
-		emit Verified(nullifierHash);
-	}
-
 
 
     /// @notice This function is used to allocate particular amount of tokens
@@ -134,17 +83,10 @@ contract Claim is AccessControl, Initializable, ReentrancyGuard, OApp {
     function claim(
         uint256 _amount,
         address _receiver,
-        bytes32[] calldata _merkleProof,
+        bytes32[] memory _merkleProof,
         bytes memory _encodedData,
-        uint256 _tokenId,
-        address signal, 
-        uint256 root, 
-        uint256 nullifierHash, 
-        uint256[8] calldata proof
-    ) internal nonReentrant {
-
-        // verify worldchainID
-        verifyWID(signal, root, nullifierHash, proof);
+        uint256 _tokenId
+    ) internal {
         
         // Load in memory for gas savings
         ClaimSettings memory claimSettingsMemory = claimSettings;
