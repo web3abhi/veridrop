@@ -1,0 +1,461 @@
+@import "../../../styles/variables.scss";
+
+.main {
+  display: flex;
+  gap: 120px;
+  padding-bottom: 100px;
+
+  .infoContainer {
+    color: $light-gray;
+    background: $border-color;
+    padding: 12px;
+    border-radius: 8px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    justify-content: center;
+  }
+
+  .kycContainer {
+    margin-top: 16px;
+    border-radius: 12px;
+    background-color: $border-color;
+    display: flex;
+    padding: 16px;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .action {
+        background-color: #ffb74d30;
+        color: #ffb74d;
+        padding: 0px 12px;
+        border-radius: 50px;
+      }
+
+      .completed {
+        background-color: $active-background;
+        color: $active-text;
+        padding: 0px 12px;
+        border-radius: 50px;
+      }
+    }
+
+    div.kycButton {
+      cursor: pointer;
+    }
+  }
+  .avatarGroup{
+    display: flex;
+    justify-content: start;
+    position: relative,
+  }
+  .avatarAdditional {
+    border: 1px solid transparent;
+    background-color: #808080;
+    border-radius: 50%;
+    width: 27px;
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    position: absolute;
+    left: 95px;
+    bottom: 6px;
+  }
+  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    margin: 0 -40px;
+  }
+
+  .leftContainer {
+    flex: 0.45;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 90px;
+    height: 80vh;
+
+    @media (max-width: 768px) {
+      position: static;
+
+      .mainInputComponents {
+        display: none;
+      }
+
+      .mainSocials {
+        display: none;
+      }
+    }
+
+    .active {
+      color: $active-text;
+      font-size: large;
+    }
+
+    .inactive {
+      color: $inactive-text;
+      font-size: large;
+    }
+
+    h1 {
+      margin: 12px 0px 4px;
+    }
+
+    .progress {
+      margin: 60px 0 20px;
+
+      p {
+        margin-bottom: 4px;
+        font-weight: 400;
+        font-size: large;
+      }
+    }
+
+    .endTime {
+      color: $light-gray;
+    }
+
+    .claimInputContainer {
+      margin-top: 60px;
+
+      p {
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+
+      .allocated {
+        color: $gray;
+        font-weight: 400;
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .icon {
+          color: $gray;
+          margin-top: 4px;
+        }
+
+        span {
+          color: $typography-primary;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .inputContainer {
+      display: flex;
+      align-items: center;
+      border-radius: 20px;
+      padding: 36px 28px;
+      justify-content: space-between;
+      border: 1px solid $divider-color;
+
+      input {
+        background: inherit;
+        border: none;
+        outline: none;
+        color: white;
+        width: 250px;
+        font-size: 32px;
+        padding: 10px 4px;
+        border-radius: 20px;
+
+        @media (max-width: 768px) {
+          width: 180px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .input {
+          width: 180px;
+        }
+      }
+
+      .tokenContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .smallFont {
+        font-size: 14px;
+        margin-top: 8px;
+        color: $gray;
+
+        span {
+          cursor: pointer;
+          color: $primary;
+          font-weight: 500;
+          margin-left: 4px;
+        }
+      }
+
+      .token {
+        background: $border-color;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        width: fit-content;
+        // cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    .claim {
+      margin-top: 20px;
+
+      &:hover {
+        background: $background-secondary;
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .secondaryInputComponents {
+      display: none;
+    }
+  }
+
+  .rightContainer {
+    flex: 0.55;
+
+    .secondaryInputComponents {
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .secondaryInputComponents {
+        display: none;
+      }
+
+      .secondarySocials {
+        display: none;
+      }
+    }
+
+    .bannerContainer {
+      margin-bottom: 20px;
+    }
+    .imageContainer {
+      margin-bottom: 10px;
+      position: relative;
+      height: 200px;
+      z-index: -10;
+
+      img {
+        border-radius: 8px;
+        margin-bottom: 12px;
+        object-fit: cover;
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .header {
+      padding-bottom: 4px;
+      border-bottom: 1px solid $divider-color;
+      margin-bottom: 20px;
+    }
+
+    .whoCanClaimContainer {
+      margin: 24px 0;
+
+      .tokenList {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 4px;
+        margin-top: 12px;
+
+        .tokenContainer {
+          padding: 12px 40px;
+          font-weight: 600;
+          border-radius: 50px;
+          background-color: $dark-gray;
+          cursor: pointer;
+        }
+      }
+
+      div {
+        background-color: $background-primary;
+        padding: 20px;
+        border-radius: 8px;
+        h4 {
+          font-size: large;
+          margin-bottom: 4px;
+        }
+      }
+    }
+
+    .activities {
+      background-color: $background-primary;
+      padding: 20px;
+      border-radius: 8px;
+      max-height: 450px;
+
+      .activity {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+
+        div {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          img {
+            border-radius: 25px;
+          }
+          p {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .about {
+      max-width: 600px;
+      overflow: hidden;
+    }
+    .showMore {
+      color: $gray;
+      cursor: pointer;
+      font-weight: 500;
+      text-emphasis: none;
+      font-size: 16px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      margin-top: 10px;
+      &:hover {
+        color: $typography-primary;
+      }
+    }
+  }
+}
+
+.detailContainer {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 4px;
+
+  .detailCard {
+    background-color: $dark-gray;
+    padding: 10px 16px;
+    border-radius: 8px;
+    flex: 0.33;
+    // width: 170px;
+  }
+}
+
+.flexContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0 16px 0;
+  justify-content: space-between;
+}
+
+.nftContainer {
+  position: relative;
+  height: 650px;
+  width: 650px;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: -1;
+
+  @media (max-width: 768px) {
+    object-fit: contain;
+    height: 320px;
+    width: 320px;
+    border-radius: 8px;
+    margin-top: -80px;
+  }
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  font-size: 24px;
+  color: $gray;
+  margin-top: 28px;
+
+  svg {
+    &:hover {
+      color: $typography-primary;
+      cursor: pointer;
+    }
+  }
+}
+
+.logoImg {
+  // border: 1px solid $gray;
+  border-radius: 12px;
+}
+
+.primaryButton {
+  width: 100%;
+  padding: 12px 0;
+  margin: 10px 0;
+  font-family: inherit;
+  background-color: white;
+  color: black;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: whitesmoke;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: $gray;
+
+    &:hover {
+      background-color: $gray;
+    }
+  }
+}
+
+.createStationDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  margin-bottom: 28px;
+  gap: 12px;
+  cursor: pointer;
+
+  .createStationText {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // padding-top: 28px;
+    background: linear-gradient(to right, #ff279c, #2e55ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
