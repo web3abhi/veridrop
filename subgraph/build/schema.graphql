@@ -1,0 +1,56 @@
+type Claim @entity {
+  id: ID!
+  txHash: Bytes!
+  claimAddress: Bytes!
+  creatorAddress: Bytes!
+  tokenDistributionWallet: Bytes!
+  airdropToken: Bytes!
+  whitelistToken: Bytes!
+  whitelistTokenNetwork: String!
+  whitelistTokenBlockNum: BigInt!
+  minWhitelistTokenValue: BigInt!
+  startTime: BigInt!
+  endTime: BigInt!
+  coolDownTime: BigInt!
+  hasAllowanceMechanism: Boolean!
+  merkleRoot: Bytes!
+  maxClaimableAmount: BigInt!
+  totalClaimAmount: BigInt! # Total claimable amount
+  admins: [Bytes!]!
+  moderators: [Bytes!]!
+  description: String!
+  totalAmountClaimed: BigInt! # Amount claimed as of now
+  numOfUsersClaimed: BigInt!
+  totalUsers: BigInt!
+  claimType: BigInt!
+  timestamp: BigInt!
+  isActive: Boolean!
+  networkId: String!
+}
+
+type Airdrop @entity {
+  id: ID!
+  txHash: Bytes!
+  claimAddress: Bytes!
+  claimerAddress: Bytes!
+  amountClaimed: BigInt!
+  totalAmountClaimed: BigInt!
+  airdropToken: Bytes!
+  timestamp: BigInt!
+}
+
+type Claimer @entity {
+  id: ID!
+  claimAddress: Bytes!
+  claimerAddress: Bytes!
+  totalAmountClaimed: BigInt!
+}
+
+type Deposit @entity {
+  id: ID!
+  txHash: Bytes!
+  claimAddress: Bytes!
+  depositorAddress: Bytes!
+  depositAmount: BigInt!
+  timestamp: BigInt!
+}

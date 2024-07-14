@@ -1,0 +1,50 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ClaimEmitter
+    network: base-sepolia
+    source:
+      address: "0x4f80A0C4F6f463D990fe3A1a95Bd988f2812387d"
+      abi: ClaimEmitter
+      startBlock: 12561706
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Claim
+        - Claimer
+        - Airdrop
+      abis:
+        - name: ClaimEmitter
+          file: ./abis/ClaimEmitter.json
+      eventHandlers:
+        - event: AirdropClaimed(address,address,address,uint256,uint256)
+          handler: handleAirdropClaimed
+        # - event: ChangeCooldownTime(address,uint256)
+        #   handler: handleChangeCooldownTime
+        # - event: ChangeMaxClaimAmount(address,uint256)
+        #   handler: handleChangeMaxClaimAmount
+        # - event: ChangeRollbackAddress(address,address)
+        #   handler: handleChangeRollbackAddress
+        # - event: ChangeRoot(address,bytes32)
+        #   handler: handleChangeRoot
+        - event: ChangeStartAndEndTime(address,uint256,uint256)
+          handler: handleChangeStartAndEndTime
+        - event: ClaimContractDeployed((string,address,address,address,address,uint256,uint256,uint256,uint256,bool,bool,bytes32,uint8,(uint256,uint256)),uint256,uint256,string,bytes,address)
+          handler: handleClaimContractDeployed
+        - event: DepositTokens(address,address,uint256)
+          handler: handleDepositTokens
+        # - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+        #   handler: handleRoleAdminChanged
+        # - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+        #   handler: handleRoleGranted
+        # - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+        #   handler: handleRoleRevoked
+        - event: RollbackTokens(address,address,uint256)
+          handler: handleRollbackTokens
+        - event: ToggleClaim(address,bool)
+          handler: handleToggleClaim
+      file: ./src/claim-emitter.ts

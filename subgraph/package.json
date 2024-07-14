@@ -1,0 +1,23 @@
+{
+  "name": "stnx-claim",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy-polygon": "graph deploy --node https://api.thegraph.com/deploy/ subham7/stnx-claim",
+    "deploy-arbitrum": "graph deploy --node https://api.thegraph.com/deploy/ subham7/stnx-claim-arbitrum",
+    "deploy-base": "graph deploy --node https://api.thegraph.com/deploy/ subham7/stnx-claim-base",
+    "deploy-bsc": "graph deploy --product hosted-service subham7/stnx-claim-bsc",
+    "create-local": "graph create --node http://localhost:8020/ subham7/stnx-claim",
+    "remove-local": "graph remove --node http://localhost:8020/ subham7/stnx-claim",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 subham7/stnx-claim",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.33.0",
+    "@graphprotocol/graph-ts": "0.27.0"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}
